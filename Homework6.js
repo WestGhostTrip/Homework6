@@ -1,47 +1,48 @@
-"use strict";
-function parseCount(number) {
-    let parsed = Number.parseInt(number);
-    if (Number.isNaN(parsed)) {
-        throw new Error("Невалидное значение");
+function parseCount(meaning) {
+  const result = Number.parseInt(meaning, 10);
+    if (isNaN(result)) {
+      throw new Error("Невалидное значение");
     }
-    return parsed;
+    return result;
 }
 
-function validateCount(meaning) {
-    try {
-        return parseCount(meaning);
-    } catch (error) {
-        console.log(error);
-        console.log("Ошибка ");
-        return error;
-    }
-}
 
+function validateCount(value) {
+  try {
+    return parseCount(value);
+  } catch (err) {
+    return err;
+  }
+}
 
 class Triangle {
-    constructor(a, b, c) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
+  constructor(a, b, c) {
+    this.a = a;
+    this.b = b;
+    this.c = c;
 
-        if ((a + b) < c || (b + c) < a || (a + c) < b) {
-            throw new Error("Треугольник с такими сторонами не существует");
-        }
+    if(((a + b) < c) || ((a + c) < b) || ((c + b) < a)) {
+      throw new Error("Треугольник с такими сторонами не существует");
     }
-    getPerimeter() {
-        return this.a + this.b + this.c;
-    }
-    getArea() {
-        let p = this.getPerimeter() / 2;
-        let triangleArea = Math.sqrt(p * (p - this.a) * (p - this.b) * (p - this.c));
-        return Number(triangleArea.toFixed(3));
-    }
+  }
+  getPerimeter() {
+    return (this.a + this.b + this.c);
+  }
+  
+  getArea() {
+    const p = +(this.a+this.b+this.c)/2;
+    const S = +(Math.sqrt(p*(p-this.a)*(p-this.b)*(p-this.c))).toFixed(3);
+    return S;
+  }
 }
 
 function getTriangle(a, b, c) {
-    try {
-        return getPerimeter(getTriangle);
-    } catch (error) {
-        console.log("Ошибка! Треугольник не существует");
+  try {
+    return new Triangle(a, b, c);
+  } catch (err) {
+    return {
+      getArea: () => "Ошибка! Треугольник не существует",
+      getPerimeter: () => "Ошибка! Треугольник не существует",
     }
+  }
 }
